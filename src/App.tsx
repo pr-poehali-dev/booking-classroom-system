@@ -25,18 +25,15 @@ const SEATS_PER_ROW = 6;
 const DISABLED_SEATS = [{ row: 4, seat: 4 }, { row: 4, seat: 5 }];
 
 const MOCK_USERS: User[] = [
-  { id: 1, name: "Алиса Петрова", email: "alice@school.ru", role: "student", avatar: "А" },
-  { id: 2, name: "Борис Иванов", email: "boris@school.ru", role: "student", avatar: "Б" },
-  { id: 3, name: "Вера Смирнова", email: "vera@school.ru", role: "student", avatar: "В" },
-  { id: 4, name: "Геннадий Козлов", email: "gen@school.ru", role: "student", avatar: "Г" },
+  { id: 1, name: "Алиев Балакиши", email: "alieff.b@school.ru", role: "student", avatar: "Б" },
+  { id: 2, name: "Алиев Тимерлан", email: "alieff.t@school.ru", role: "student", avatar: "Т" },
+  { id: 3, name: "Антонова Виктория", email: "antonova@school.ru", role: "student", avatar: "В" },
+  { id: 4, name: "Байглильдина Гульназира", email: "baigildina@school.ru", role: "student", avatar: "Г" },
+  { id: 5, name: "Бабаева Лейли", email: "babaeva@school.ru", role: "student", avatar: "Л" },
   { id: 100, name: "Мария Учителева", email: "teacher@school.ru", role: "admin", avatar: "М" },
 ];
 
-const INITIAL_BOOKINGS: Booking[] = [
-  { userId: 2, userName: "Борис Иванов", row: 0, seat: 1 },
-  { userId: 3, userName: "Вера Смирнова", row: 1, seat: 3 },
-  { userId: 4, userName: "Геннадий Козлов", row: 2, seat: 0 },
-];
+const INITIAL_BOOKINGS: Booking[] = [];
 
 const ROW_LABELS = ["1-й ряд", "2-й ряд", "3-й ряд", "4-й ряд", "5-й ряд"];
 
@@ -174,19 +171,20 @@ function AuthScreen({ onLogin }: { onLogin: (u: User) => void }) {
           </form>
 
           <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-xs text-muted-foreground mb-3 text-center font-medium">Быстрый вход для демо (пароль: 1234)</p>
-            <div className="grid grid-cols-2 gap-2">
-              {MOCK_USERS.slice(0, 4).map((u) => (
+            <p className="text-xs text-muted-foreground mb-3 text-center font-medium">Быстрый вход — выбери своё имя</p>
+            <div className="flex flex-col gap-2">
+              {MOCK_USERS.filter(u => u.role === "student").map((u) => (
                 <button key={u.id} onClick={() => quickLogin(u)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-muted hover:bg-primary/10 hover:text-primary transition-all text-xs font-semibold">
-                  <div className="w-6 h-6 gradient-accent rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{u.avatar}</div>
-                  <span className="truncate">{u.name.split(" ")[0]}</span>
+                  className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-muted hover:bg-primary/10 hover:text-primary transition-all text-sm font-semibold w-full text-left">
+                  <div className="w-7 h-7 gradient-accent rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{u.avatar}</div>
+                  <span>{u.name}</span>
+                  <Icon name="ChevronRight" size={14} className="ml-auto text-muted-foreground" />
                 </button>
               ))}
             </div>
-            <button onClick={() => quickLogin(MOCK_USERS[4])}
-              className="w-full mt-2 flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 hover:from-purple-100 hover:to-blue-100 text-primary transition-all text-xs font-semibold border border-primary/20">
-              <div className="w-6 h-6 gradient-primary rounded-full flex items-center justify-center text-white text-xs font-bold">М</div>
+            <button onClick={() => quickLogin(MOCK_USERS.find(u => u.role === "admin")!)}
+              className="w-full mt-2 flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-50 to-blue-50 hover:from-purple-100 hover:to-blue-100 text-primary transition-all text-sm font-semibold border border-primary/20">
+              <div className="w-7 h-7 gradient-primary rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">М</div>
               <span>Мария Учителева</span>
               <span className="ml-auto text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Админ</span>
             </button>
